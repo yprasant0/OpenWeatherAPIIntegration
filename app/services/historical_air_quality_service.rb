@@ -16,7 +16,6 @@ class HistoricalAirQualityService < BaseApiService
         }
 
         response = fetch_data(base_uri + end_point, options: { query: query })
-
         if response && response.success?
           air_quality_records = parse_air_quality_data(location, response)
           AirQuality.insert_all(air_quality_records)

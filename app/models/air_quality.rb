@@ -9,8 +9,8 @@ class AirQuality < ApplicationRecord
              EXTRACT(YEAR FROM measured_at) AS year,
              EXTRACT(MONTH FROM measured_at) AS month,
              AVG(aqi) AS average_aqi")
-      .group("locations.name, EXTRACT(YEAR FROM measured_at), EXTRACT(MONTH FROM measured_at)")
-      .order("locations.name, EXTRACT(YEAR FROM measured_at), EXTRACT(MONTH FROM measured_at)")
+      .group(Arel.sql("locations.name, EXTRACT(YEAR FROM measured_at), EXTRACT(MONTH FROM measured_at)"))
+      .order(Arel.sql("locations.name, EXTRACT(YEAR FROM measured_at), EXTRACT(MONTH FROM measured_at)"))
   }
 
   scope :average_aqi_per_location, -> {
