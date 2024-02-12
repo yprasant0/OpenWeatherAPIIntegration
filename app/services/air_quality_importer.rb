@@ -1,45 +1,54 @@
 class AirQualityImporter
-  BATCH_SIZE = 10 # Define an appropriate batch size
+  def self.import_all_locations
+    Location.find_each do |location|
+      response = fetch_air_quality_for(location)
 
-  def self.import_for_all_locations
-    today = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
-    cache_key = "existing_air_quality_#{today}_location_ids"
-
-    # Fetch or initialize the cache for today's processed locations
-    processed_location_ids = Rails.cache.fetch(cache_key, expires_in: 24.hours) { [] }
-
-    # Determine which locations need processing
-    locations_to_process = Location.where.not(id: processed_location_ids)
-
-    locations_to_process.find_in_batches(batch_size: BATCH_SIZE) do |batch|
-      batch.each do |location|
-        air_quality_data = AirQualityService.fetch_air_quality(location.latitude, location.longitude)
-        if air_quality_data && air_quality_data.success?
-          save_air_quality_data(location, air_quality_data)
-          # Update the cache with the newly processed location ID
-          processed_location_ids << location.id
-        end
+      if response.present?
+        air_quality_data = parse_response(response)
+        create_air_quality_record(location, air_quality_data) if air_quality_data
+      else
+        log_failure("Failed to fetch air quality for #{location.name}")
       end
-
-      # Update the cache for the batch
-      Rails.cache.write(cache_key, processed_location_ids, expires_in: 24.hours)
     end
   end
 
   private
 
-  def self.save_air_quality_data(location, data)
-    # Assuming a simplified data structure for demonstration
-    AirQuality.create!(
-      location: location,
-      aqi: data['list'].first['main']['aqi'],
-      pm2_5: data['list'].first['components']['pm2_5'],
-      pm10: data['list'].first['components']['pm10'],
-      co: data['list'].first['components']['co'],
-      so2: data['list'].first['components']['so2'],
-      no2: data['list'].first['components']['no2'],
-      o3: data['list'].first['components']['o3'],
-      measured_at: Time.current
-    )
+  def self.fetch_air_quality_for(location)
+    AirQualityService.fetch_air_quality(location.latitude, location.longitude)
+  end
+
+  def self.parse_response(response)
+    data = response.parsed_response
+    return log_failure("Error parsing air quality response: Invalid format") unless data && data['list'] && data['list'].any?
+
+    extract_air_quality_data(data['list'].first)
+  end
+
+  def self.create_air_quality_record(location, air_quality_data)
+    location.air_qualities.create!(air_quality_data)
+  rescue ActiveRecord::RecordInvalid => e
+    log_failure("Error saving air quality data for #{location.name}: #{e.message}")
+  end
+
+  def self.extract_air_quality_data(data)
+    {
+      aqi: data['main']['aqi'],
+      pm2_5: data['components']['pm2_5'],
+      pm10: data['components']['pm10'],
+      co: data['components']['co'],
+      so2: data['components']['so2'],
+      no2: data['components']['no2'],
+      o3: data['components']['o3'],
+      nh3: data['components']['nh3'],
+      no: data['components']['no'],
+      measured_at: data['dt'] # Unix timestamp of the time when the data was measured
+    }
+  end
+
+  def self.log_failure(message)
+    Rails.logger.error message
   end
 end
+
+

@@ -3,4 +3,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+
+  # config/routes.rb
+  resources :air_qualities, only: [:index]
+
 end

@@ -1,24 +1,27 @@
 class HistoricalAirQualityService < BaseApiService
   # Inherits from BaseApiService to use its HTTP request capabilities
-  def self.fetch_and_store_history
+  base_uri ENV['AIR_QUALITY_HISTORY_API']
+  def self.fetch_and_store_history(months_back: 12, days_from_start: 10)
     Location.find_each do |location|
-      (1.year.ago.to_date..Date.today).select { |d| d.day == 1 }.each do |first_day_of_month|
-        # end_of_month = first_day_of_month.end_of_month
+      start_date = months_back.months.ago.beginning_of_month.to_date
+      (start_date..Date.today).select { |d| d.day == 1 }.each do |first_day_of_month|
+        day_of_the_month = first_day_of_month + days_from_start.days
+        end_point = '/history'
         query = {
           lat: location.latitude,
           lon: location.longitude,
           start: first_day_of_month.to_time.to_i,
-          end: first_day_of_month.to_time.to_i,
+          end: day_of_the_month.to_time.to_i,
           appid: ENV['OPEN_WEATHER_MAP_API_KEY']
         }
 
-        response = fetch_data('/history', options: { query: query })
+        response = fetch_data(base_uri + end_point, options: { query: query })
 
         if response && response.success?
           air_quality_records = parse_air_quality_data(location, response)
           AirQuality.insert_all(air_quality_records)
         else
-          Rails.logger.error "Failed to fetch air quality data for location #{location.id}"
+          log_and_record_failure(location, query, response)
         end
       end
     end
@@ -46,5 +49,10 @@ class HistoricalAirQualityService < BaseApiService
         updated_at: Time.now
       }
     end
+  end
+
+  def self.log_and_record_failure(location, query, response)
+    Rails.logger.error "Failed to fetch historical air quality for #{location.name}. HTTP Status: #{response.code}, Body: #{response.body}"
+    FailedRequest.create!(query_params: query, request_type: 'Historical Air Quality', status: 'failed', error_message: response.message, created_at: Time.current, updated_at: Time.current)
   end
 end
