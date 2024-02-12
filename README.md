@@ -1,40 +1,55 @@
-# OpenWeatherAPIIntegration
-This project aims to target the following:
+OpenWeatherAPIIntegration
+OpenWeatherAPIIntegration is a Ruby on Rails application designed to leverage the OpenWeatherMap APIs for fetching and analyzing air pollution data across various locations in India. It features real-time data fetching, scheduled updates, and comprehensive analytics on air quality indices.
 
-Ruby on Rails application using PostgreSQL as the database.
-Maintaining a list of 20 locations across India along with their location info - latitude, longitude.
-Utilizing the OpenWeatherMap Air Pollution API to fetch current air pollution data for the locations.
-Creating an importer to parse and save the fetched data into the database, including air quality index (AQI), pollutant concentrations, and location details.
-Implementing a scheduled task to run the importer every 1 hour used Sidekiq (for demo purposes time interval is set to every 30s)
-Use RSpec to write unit tests for the application (Used minitest instead)
-Write queries to: a. Calculate the average air quality index per month per location. b. Calculate the average air quality index per location. c. Calculate the average air quality index per state.
-Three apis from Openweathermap has been used
-OpenWeatherMap Air Pollution API https://openweathermap.org/api/air-pollution
-OpenWeatherMap Air Pollution History API https://openweathermap.org/api/air-pollution#history
-OpenWeatherMap Geocoding API https://openweathermap.org/api/geocoding-api
+Features
+Rails Application: Built with Ruby on Rails and PostgreSQL.
+Data Fetching: Utilizes OpenWeatherMap APIs for current and historical air pollution data.
+Scheduled Updates: Implements Sidekiq for regular data updates.
+Comprehensive Analytics: Offers detailed analysis on air quality indices.
+Prerequisites
+Before you begin, ensure you have installed:
 
-Ruby version - ruby 3.1.2p20
-Rails version - rails 7.0.8
-
+Ruby (version 3.1.2)
+Rails (version 7.0.8)
+PostgreSQL
+Redis
 Getting Started
-Clone the git repo
-Once ruby and rails is setup on your system, install redis as well
-sudo apt-get install redis (to install redis locally)
-Run - bundle install/update to install all the gems
-Run rake db:create, rake db:migrate to initialize the database for the RoR application
+Follow these steps to get your application up and running:
+
+1. Clone the Repository
+    git clone <repository-url>
+    cd OpenWeatherAPIIntegration
+2. Install Dependencies
+    bundle install
+3. Setup Database
+    rails db:create
+    rails db:migrate
+4. Seed the Database
+   To populate the database with initial data:
 
 
-Runnig the application
-Once the basic setup and installation is done
-run rake db:seed to populate the databse with some dummy cities, the seeds code use the GEOCODING API
-Open 3 seperate terminals for 3 servers Rails, Redis and Sidekiq
-Rails Server : rails s (in terminal 1)
-Redis : redis-server (in terminal 2)
-Sidekiq: bundle exec sidekiq -C config/sidekiq.yml (in terminal 3)
+    rails db:seed
+    Running the Application
+    To run the application, you will need to start the Rails server, Redis, and Sidekiq in separate terminals:
+    
 
-To check the queries
-run the rails server
-http://localhost:3000/air_qualities to view the queries
+      rails s
+      redis-server
+      bundle exec sidekiq -C config/sidekiq.yml
+      Viewing the Data
+      Navigate to http://localhost:3000/air_qualities in your web browser to view and analyze the air quality data.
 
+Data Analysis Queries
 
+The application supports various queries for data analysis, including:
 
+Average air quality index (AQI) per month per location.
+Average AQI per location.
+Average AQI per state.
+Technologies Used
+
+OpenWeatherMap API: For fetching air pollution data.
+Ruby on Rails: Application framework.
+PostgreSQL: Database management.
+Sidekiq: Background processing.
+RSpec: Testing suite (Note: initially mentioned, but Minitest is used).
