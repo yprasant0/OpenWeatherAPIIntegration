@@ -5,3 +5,4 @@ class AirQualitiesController < ApplicationController
     @avg_aqi_per_state = AirQuality.average_aqi_per_state
   end
 end
+
