@@ -29,3 +29,30 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+ Ignore precompiled assets in development.
+/public/assets
+/public/packs
+/public/packs-test
+/public/system
+/public/uploads
+
+# Ignore Yarn cache directory
+.yarn/cache
+
+# Ignore IDE and editor files
+.idea/
+*.swp
+*.swo
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.DS_Store
+Thumbs.db
+
+# Ignore precompiled assets in development.
+/public/assets
+/public/packs
+/public/packs-test
+/public/system
+/public/uploads
