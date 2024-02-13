@@ -29,3 +29,55 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+ Ignore precompiled assets in development.
+/public/assets
+/public/packs
+/public/packs-test
+/public/system
+/public/uploads
+
+# Ignore Yarn cache directory
+.yarn/cache
+
+# Ignore IDE and editor files
+.idea/
+*.swp
+*.swo
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.DS_Store
+Thumbs.db
+
+# Ignore precompiled assets in development.
+/public/assets
+/public/packs
+/public/packs-test
+/public/system
+/public/uploads
+
+# Ignore Mac and Linux file system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
