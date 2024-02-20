@@ -1,5 +1,6 @@
 class AirQualityImporter
   def self.import_all_locations
+    #Fetches location in batches
     Location.find_each do |location|
       response = fetch_air_quality_for(location)
 
@@ -42,7 +43,7 @@ class AirQualityImporter
       o3: data['components']['o3'],
       nh3: data['components']['nh3'],
       no: data['components']['no'],
-      measured_at: data['dt'] # Unix timestamp of the time when the data was measured
+      measured_at: Time.at(data['dt']).to_datetime # timestamp of the time when the data was measured
     }
   end
 

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AirQualityImporter do
   describe '.import_all_locations' do
     let!(:location) { FactoryBot.create(:location, latitude: 40.712776, longitude: -74.005974) }
-    let(:api_response) { { "list" => [{ "main" => { "aqi" => 3 }, "components" => { "pm2_5" => 12.34, "pm10" => 55.76, "co" => 0.004, "so2" => 0.005, "no2" => 0.02, "o3" => 0.007 }, "dt" => Time.current }] }.to_json }
+    let(:api_response) { { "list" => [{ "main" => { "aqi" => 3 }, "components" => { "pm2_5" => 12.34, "pm10" => 55.76, "co" => 0.004, "so2" => 0.005, "no2" => 0.02, "o3" => 0.007 }, "dt" => 1708398179 }] }.to_json }
 
     before do
       allow(AirQualityService).to receive(:fetch_air_quality).with(location.latitude, location.longitude).and_return(double(body: api_response, parsed_response: JSON.parse(api_response)))
@@ -20,7 +20,7 @@ RSpec.describe AirQualityImporter do
       expect(air_quality.so2).to eq(0.005)
       expect(air_quality.no2).to eq(0.02)
       expect(air_quality.o3).to eq(0.007)
-      # expect(air_quality.measured_at).to eq(Time.current)
+      expect(air_quality.measured_at).to eq(Time.at(1708398179).to_datetime)
     end
 
     context 'when the API request fails' do

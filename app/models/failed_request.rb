@@ -1,2 +1,3 @@
 class FailedRequest < ApplicationRecord
+
 end

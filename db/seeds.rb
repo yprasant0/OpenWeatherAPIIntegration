@@ -1,8 +1,8 @@
 # Fetch long and lat for cities in India and store them in DB
 
-indian_cities = %w[Nagpur Delhi Bangalore Hyderabad Ahmedabad Chennai Kolkata Pune Jaipur Lucknow Kanpur Mumbai Indore Thiruvananthapuram Bhopal Visakhapatnam Patna Ludhiana Agra Varanasi]
+# indian_cities = %w[Nagpur Delhi Bangalore Hyderabad Ahmedabad Chennai Kolkata Pune Jaipur Lucknow Kanpur Mumbai Indore Thiruvananthapuram Bhopal Visakhapatnam Patna Ludhiana Agra Varanasi]
 
-
+indian_cities = %w[Delhi Mumbai]
 puts 'Fetching and creating locations... \n'
 locations_to_insert = []
 failed_requests_to_insert = []

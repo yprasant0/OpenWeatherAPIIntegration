@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe HistoricalAirQualityService do
-  describe '.fetch_and_store_history' do
+  describe 'fetch_and_store_history' do
     let(:location) { create(:location, latitude: 50, longitude: 50) }
     let(:base_uri) { described_class.base_uri }
     let(:end_point) { '/history' }

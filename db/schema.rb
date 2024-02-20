@@ -30,7 +30,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_11_205007) do
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_air_qualities_on_location_id"
     t.index ["measured_at", "location_id"], name: "index_air_qualities_on_measured_at_and_location_id"
-    t.index ["measured_at"], name: "index_air_qualities_on_measured_at"
   end
 
   create_table "failed_requests", force: :cascade do |t|

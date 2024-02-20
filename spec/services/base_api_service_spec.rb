@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe BaseApiService do
-  describe '.fetch_data' do
+  describe 'fetching data' do
     let(:method) { :get }
     let(:options) { {} }
 
     context 'when the request initially fails but succeeds on retry' do
-      let(:url) { 'https://example.com/test' }
+      let(:url) { 'http://api.openweathermap.org/test' }
 
       it 'retries the request and successfully fetches data' do
         # First request fails with a 500 Internal Server Error
@@ -24,7 +24,7 @@ RSpec.describe BaseApiService do
     end
 
     context 'when the request fails and exceeds the maximum number of retries' do
-      let(:url) { 'https://example.com/fail' }
+      let(:url) { 'http://api.openweathermap.org/fail' }
       let(:max_attempts) { 3 }
       let(:method) { :get }
 
@@ -45,7 +45,7 @@ RSpec.describe BaseApiService do
     end
 
     context 'when an unexpected error occurs' do
-      let(:url) { 'https://example.com' }
+      let(:url) { 'http://api.openweathermap.org' }
 
       it 'logs and re-raises unexpected errors' do
         allow(BaseApiService).to receive(:send).and_raise(StandardError.new("Network error"))
@@ -58,7 +58,7 @@ RSpec.describe BaseApiService do
     end
 
     context 'when the HTTP method is invalid' do
-      let(:url) { 'https://example.com' }
+      let(:url) { 'http://api.openweathermap.org' }
 
       it 'raises an ArgumentError' do
         expect {
@@ -68,7 +68,7 @@ RSpec.describe BaseApiService do
     end
 
     context 'when the response is successful' do
-      let(:url) { 'https://example.com' }
+      let(:url) { 'http://api.openweathermap.org' }
 
       it 'returns the response' do
         stub_request(method, url).to_return(status: 200, body: "Success")

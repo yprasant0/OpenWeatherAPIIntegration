@@ -4,9 +4,7 @@ class AirQualityService < BaseApiService
   def self.fetch_air_quality(latitude, longitude)
     options = query_options(latitude, longitude)
     endpoint = "/air_pollution"
-
     response = fetch_data(base_uri + endpoint, method: :get, options: options)
-
     handle_response(response, options)
   rescue StandardError => e
     log_and_record_failure(e.message, options)
@@ -21,6 +19,7 @@ class AirQualityService < BaseApiService
 
   def self.handle_response(response, options)
     if response.present?
+      Rails.logger.info "Air quality data fetched successfully for #{options[:query][:lat]}, #{options[:query][:lon]}"
       response
     else
       log_and_record_failure("Failed to fetch air quality data: #{response.message}", options)

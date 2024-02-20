@@ -1,5 +1,6 @@
 class GeocodingService < BaseApiService
   base_uri ENV['GEOCODING_URI']
+
   def self.geocode(query_params)
     options = { query: { q: query_params[:q], appid: open_weather_api_key, limit: 1 } } # limit to 1 result
     end_point = '/direct'

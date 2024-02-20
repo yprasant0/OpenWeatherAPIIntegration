@@ -2,15 +2,15 @@
 
 <h2>Average AQI Per Month Per Location</h2>
 <% @avg_aqi_per_month_location.each do |record| %>
-  <p><%= record.location_name %> - <%= record.year %>-<%= record.month %>: <%= record.average_aqi %></p>
+  <p><%= record.location_name %> - &nbsp; <%= record.year.to_i %>/<%= record.month.to_i %>: &nbsp; <strong><%= record.average_aqi.round(3) %></strong></p>
 <% end %>
 
 <h2>Average AQI Per Location</h2>
 <% @avg_aqi_per_location.each do |record| %>
-  <p><%= record.location_name %>: <%= record.average_aqi %></p>
+  <p><%= record.location_name %>: &nbsp; <strong><%= record.average_aqi.round(3) %></strong></p>
 <% end %>
 
 <h2>Average AQI Per State</h2>
 <% @avg_aqi_per_state.each do |record| %>
-  <p><%= record.state %>: <%= record.average_aqi %></p>
+  <p><%= record.state %>: &nbsp; <strong><%= record.average_aqi.round(3) %></strong></p>
 <% end %>

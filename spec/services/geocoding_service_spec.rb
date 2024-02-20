@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe GeocodingService do
 
   describe GeocodingService do
-    describe '.geocode' do
+    describe 'geocode' do
       it 'successfully geocodes a location', :vcr do
         VCR.use_cassette('geocode_london') do
           query_params = { q: 'New York' }
@@ -27,5 +27,4 @@ RSpec.describe GeocodingService do
       end
     end
   end
-
 end
