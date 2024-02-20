@@ -25,6 +25,7 @@ Follow these steps to get your application up and running:
    ```bash
    git clone <repository-url>
    cd OpenWeatherAPIIntegration
+   git checkout relevent_changes
    ```
 2. **Install Dependencies**
    ```bash
