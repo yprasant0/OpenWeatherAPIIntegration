@@ -17,13 +17,13 @@ Getting Started
 Follow these steps to get your application up and running:
 
 1. Clone the Repository
-   git clone <repository-url>
-   cd OpenWeatherAPIIntegration
+    git clone <repository-url>
+    cd OpenWeatherAPIIntegration
 2. Install Dependencies
-   bundle install
+    bundle install
 3. Setup Database
-   rails db:create
-   rails db:migrate
+    rails db:create
+    rails db:migrate
 4. Seed the Database
    To populate the database with initial data:
 
